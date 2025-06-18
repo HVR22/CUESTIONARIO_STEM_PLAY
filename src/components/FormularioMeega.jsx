@@ -107,25 +107,39 @@ export default function FormularioEstimulo({ tipoTest = "pre" }) {
               />
             </div>
           </div>
-
-          {/* Preguntas */}
-          {preguntas.map((pregunta, i) => (
+            {preguntas.map((pregunta, i) => (
             <div key={i} className="mb-4">
-              <label className="form-label fw-semibold">{pregunta}</label>
-              <select
-                className="form-select"
-                {...register(`q${i + 1}`, { required: true })}
-                required
-              >
-                <option value="">Selecciona una opción</option>
-                {[1, 2, 3, 4, 5].map((val) => (
-                  <option key={val} value={val}>
-                    {val}
-                  </option>
-                ))}
-              </select>
+                <label className="form-label fw-semibold">{pregunta}</label>
+                <div className="d-flex flex-column ms-3">
+                {[1, 2, 3, 4, 5].map((val) => {
+                    const etiquetas = {
+                    1: "Muy en desacuerdo",
+                    2: "En desacuerdo",
+                    3: "Ni de acuerdo ni en desacuerdo",
+                    4: "De acuerdo",
+                    5: "Muy de acuerdo"
+                    };
+                    return (
+                    <div key={val} className="form-check">
+                        <input
+                        className="form-check-input"
+                        type="radio"
+                        id={`q${i + 1}_opt${val}`}
+                        value={val}
+                        {...register(`q${i + 1}`, { required: true })}
+                        />
+                        <label
+                        className="form-check-label"
+                        htmlFor={`q${i + 1}_opt${val}`}
+                        >
+                        {val} - {etiquetas[val]}
+                        </label>
+                    </div>
+                    );
+                })}
+                </div>
             </div>
-          ))}
+            ))}
 
           {/* Botón */}
           <div className="text-center pt-3">
