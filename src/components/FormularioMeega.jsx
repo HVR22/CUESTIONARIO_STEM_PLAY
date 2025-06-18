@@ -67,7 +67,7 @@ export default function FormularioEstimulo({ tipoTest = "pre" }) {
     <div className="container mt-4">
       <div className="mx-auto card shadow-lg p-4 p-md-5" style={{ maxWidth: "900px" }}>
         <h1 className="text-center mb-4 text-primary">
-          Cuestionario de Experiencia de usuario y usabilidad ({tipoTest === "pre" ? "Pre-Test" : "Post-Test"})
+          3. Cuestionario de Experiencia de usuario y usabilidad ({tipoTest === "pre" ? "Pre-Test" : "Post-Test"})
         </h1>
         <div>
             <h5>

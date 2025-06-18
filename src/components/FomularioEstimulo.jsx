@@ -112,7 +112,7 @@ export default function FormularioEstimulo({ tipoTest = "pre" }) {
     <div className="container mt-4">
       <div className="mx-auto card shadow-lg p-4 p-md-5" style={{ maxWidth: "900px" }}>
         <h1 className="text-center mb-4 text-primary">
-          Cuestionario de Estimulación ({tipoTest === "pre" ? "Pre-Test" : "Post-Test"})
+          {tipoTest === "pre" ? "1." : "2."} Cuestionario de Estimulación {tipoTest === "pre" ? "Pre-Test" : "Post-Test"}
         </h1>
 
         <form onSubmit={handleSubmit(onSubmit)}>

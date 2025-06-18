@@ -7,14 +7,15 @@ export default function App() {
     <div className="container py-5">
       <nav className="mb-4">
         <ul className="nav nav-pills justify-content-center gap-3">
+
           <li className="nav-item">
-            <Link to="/meega" className="nav-link">Experiencia de usuario y usabilidad Post</Link>
+            <Link to="/estimulo-pre" className="nav-link">1. Estimulación Pre</Link>
           </li>
           <li className="nav-item">
-            <Link to="/estimulo-pre" className="nav-link">Estimulación Pre</Link>
+            <Link to="/estimulo-post" className="nav-link">2. Estimulación Post</Link>
           </li>
           <li className="nav-item">
-            <Link to="/estimulo-post" className="nav-link">Estimulación Post</Link>
+            <Link to="/meega" className="nav-link">3. Experiencia de usuario y usabilidad Post</Link>
           </li>
         </ul>
       </nav>
