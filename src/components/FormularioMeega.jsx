@@ -1,8 +1,10 @@
 import { useForm } from "react-hook-form";
 import { supabase } from "../supabaseClient";
+import { useNavigate } from "react-router-dom";
 
 export default function FormularioEstimulo({ tipoTest = "pre" }) {
-const { register, handleSubmit, reset, formState: { errors } } = useForm();
+const { register, handleSubmit, reset, formState: { errors } } = useForm({mode: "onTouched"});
+const navigate = useNavigate();
 
   const preguntas = [
     "1. El diseño del juego es atractivo (interfaz, gráficos, elementos visuales).",
@@ -58,7 +60,7 @@ const { register, handleSubmit, reset, formState: { errors } } = useForm();
       console.error("Error Supabase:", error);
       alert("Error al enviar respuestas");
     } else {
-      alert("¡Respuestas enviadas gracias por participar!");
+      navigate("/gracias");
       reset();
     }
   };
@@ -82,34 +84,58 @@ const { register, handleSubmit, reset, formState: { errors } } = useForm();
             </h5>
         </div>
 <br />
-        <form onSubmit={handleSubmit(onSubmit)} className="needs-validation" noValidate>
-          {/* Nombre y Edad */}
-            <div className="row mb-4">
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        {/* Nombre y Edad */}
+        <div className="row mb-4">
             <div className="col-md-6">
-                <label className="form-label fw-bold">Nombre</label>
-                <input
+            <label className="form-label fw-bold">Nombre</label>
+            <input
                 type="text"
                 className={`form-control ${errors.name ? "is-invalid" : ""}`}
                 placeholder="Tu nombre"
-                {...register("name", { required: true })}
-                />
-                {errors.name && (
-                <p className="text-danger mt-1 ms-1">⚠️ Este campo es obligatorio</p>
-                )}
+                {...register("name", {
+                required: "⚠️ Este campo es obligatorio",
+                pattern: {
+                    value: /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/,
+                    message: "⚠️ Solo se permiten letras y espacios"
+                }
+                })}
+            />
+            {errors.name && (
+                <p className="text-danger mt-1 ms-1">{errors.name.message}</p>
+            )}
             </div>
+
             <div className="col-md-6">
                 <label className="form-label fw-bold">Edad</label>
                 <input
                 type="number"
                 className={`form-control ${errors.age ? "is-invalid" : ""}`}
                 placeholder="Tu edad"
-                min={3}
-                max={120}
-                {...register("age", { required: true })}
+                min={13}
+                max={20}
+                onInput={(e) => {
+                    if (e.target.value.length > 2) {
+                    e.target.value = e.target.value.slice(0, 2);
+                    }
+                }}
+                {...register("age", {
+                    required: "⚠️ Este campo es obligatorio",
+                    min: {
+                    value: 13,
+                    message: "⚠️ La edad mínima es 13",
+                    },
+                    max: {
+                    value: 20,
+                    message: "⚠️ La edad máxima es 20",
+                    },
+                })}
                 />
                 {errors.age && (
-                <p className="text-danger mt-1 ms-1">⚠️ Este campo es obligatorio</p>
+                <p className="text-danger mt-1 ms-1">{errors.age.message}</p>
                 )}
+
+
             </div>
             </div>
 
