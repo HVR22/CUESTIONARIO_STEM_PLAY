@@ -108,6 +108,7 @@ const navigate = useNavigate();
       alert("Error al enviar respuestas");
     } else {
       localStorage.setItem("nombreParticipante", data.name);
+      localStorage.setItem("tipoCuestionario", tipoTest === "pre" ? "estimulo-pre" : "estimulo-post");
       navigate("/gracias");
       reset();
     }

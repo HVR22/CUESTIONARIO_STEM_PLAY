@@ -60,6 +60,7 @@ const navigate = useNavigate();
       console.error("Error Supabase:", error);
       alert("Error al enviar respuestas");
     } else {
+      localStorage.setItem("tipoCuestionario", "meega");
       navigate("/gracias");
       reset();
     }
