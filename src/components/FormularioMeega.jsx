@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { supabase } from "../supabaseClient";
 
 export default function FormularioEstimulo({ tipoTest = "pre" }) {
-  const { register, handleSubmit, reset } = useForm();
+const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
   const preguntas = [
     "1. El diseño del juego es atractivo (interfaz, gráficos, elementos visuales).",
@@ -84,33 +84,39 @@ export default function FormularioEstimulo({ tipoTest = "pre" }) {
 <br />
         <form onSubmit={handleSubmit(onSubmit)} className="needs-validation" noValidate>
           {/* Nombre y Edad */}
-          <div className="row mb-4">
+            <div className="row mb-4">
             <div className="col-md-6">
-              <label className="form-label fw-bold">Nombre</label>
-              <input
+                <label className="form-label fw-bold">Nombre</label>
+                <input
                 type="text"
-                className="form-control"
+                className={`form-control ${errors.name ? "is-invalid" : ""}`}
                 placeholder="Tu nombre"
                 {...register("name", { required: true })}
-                required
-              />
+                />
+                {errors.name && (
+                <p className="text-danger mt-1 ms-1">⚠️ Este campo es obligatorio</p>
+                )}
             </div>
             <div className="col-md-6">
-              <label className="form-label fw-bold">Edad</label>
-              <input
+                <label className="form-label fw-bold">Edad</label>
+                <input
                 type="number"
-                className="form-control"
+                className={`form-control ${errors.age ? "is-invalid" : ""}`}
+                placeholder="Tu edad"
                 min={3}
                 max={120}
                 {...register("age", { required: true })}
-                required
-              />
+                />
+                {errors.age && (
+                <p className="text-danger mt-1 ms-1">⚠️ Este campo es obligatorio</p>
+                )}
             </div>
-          </div>
+            </div>
+
             {preguntas.map((pregunta, i) => (
             <div key={i} className="mb-4">
                 <label className="form-label fw-semibold">{pregunta}</label>
-                <div className="d-flex flex-column ms-3">
+                <div className= "d-flex flex-column ms-3">
                 {[1, 2, 3, 4, 5].map((val) => {
                     const etiquetas = {
                     1: "Muy en desacuerdo",
@@ -128,18 +134,21 @@ export default function FormularioEstimulo({ tipoTest = "pre" }) {
                         value={val}
                         {...register(`q${i + 1}`, { required: true })}
                         />
-                        <label
-                        className="form-check-label"
-                        htmlFor={`q${i + 1}_opt${val}`}
-                        >
+                        <label className="form-check-label" htmlFor={`q${i + 1}_opt${val}`}>
                         {val} - {etiquetas[val]}
                         </label>
                     </div>
                     );
                 })}
                 </div>
+                {errors[`q${i + 1}`] && (
+                <p className="text-danger mt-1 ms-2">
+                    ⚠️ Falta responder esta pregunta para poder enviar el formulario.
+                </p>
+                )}
             </div>
             ))}
+
 
           {/* Botón */}
           <div className="text-center pt-3">

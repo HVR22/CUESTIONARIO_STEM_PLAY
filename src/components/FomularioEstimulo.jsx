@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { supabase } from "../supabaseClient";
 
 export default function FormularioEstimulo({ tipoTest = "pre" }) {
-  const { register, handleSubmit, reset } = useForm();
+const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
   const preguntas = [
     {
@@ -116,24 +116,44 @@ export default function FormularioEstimulo({ tipoTest = "pre" }) {
         </h1>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="row mb-4">
-            <div className="col-md-6">
-              <label className="form-label fw-bold">Nombre</label>
-              <input type="text" className="form-control" {...register("name", { required: true })} required />
-            </div>
-            <div className="col-md-6">
-              <label className="form-label fw-bold">Edad</label>
-              <input type="number" className="form-control" min={3} max={120} {...register("age", { required: true })} required />
-            </div>
+        <div className="row mb-4">
+          <div className="col-md-6">
+            <label className="form-label fw-bold">Nombre</label>
+            <input
+              type="text"
+              className={`form-control ${errors.name ? "is-invalid" : ""}`}
+              placeholder="Tu nombre"
+              {...register("name", { required: true })}
+            />
+            {errors.name && (
+              <p className="text-danger mt-1 ms-1">⚠️ Este campo es obligatorio</p>
+            )}
           </div>
+          <div className="col-md-6">
+            <label className="form-label fw-bold">Edad</label>
+            <input
+              type="number"
+              className={`form-control ${errors.age ? "is-invalid" : ""}`}
+              placeholder="Tu edad"
+              min={3}
+              max={120}
+              {...register("age", { required: true })}
+            />
+            {errors.age && (
+              <p className="text-danger mt-1 ms-1">⚠️ Este campo es obligatorio</p>
+            )}
+          </div>
+        </div>
+
 
           {preguntas.map((pregunta, i) => (
             <div key={i} className="mb-4">
               <label className="form-label d-block">{pregunta.texto}</label>
+
               {pregunta.etiquetas.map((etiqueta, val) => (
                 <div key={val} className="form-check">
                   <input
-                    className="form-check-input"
+                    className={`form-check-input ${errors[`q${i + 1}`] ? "is-invalid" : ""}`}
                     type="radio"
                     id={`q${i + 1}_opt${val + 1}`}
                     value={val + 1}
@@ -144,8 +164,16 @@ export default function FormularioEstimulo({ tipoTest = "pre" }) {
                   </label>
                 </div>
               ))}
+
+              {/* Mensaje de error */}
+              {errors[`q${i + 1}`] && (
+                <p className="text-danger mt-1 ms-1">
+                  ⚠️ Falta responder la pregunta para que se envíe el formulario
+                </p>
+              )}
             </div>
           ))}
+
 
           <div className="text-center">
             <button type="submit" className="btn btn-primary px-4">
