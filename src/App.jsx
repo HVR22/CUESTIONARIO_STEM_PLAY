@@ -1,4 +1,4 @@
-import { Routes, Route, Link, useLocation } from "react-router-dom";
+import { Routes, Route, NavLink, useLocation } from "react-router-dom";
 import FormularioMeega from "./components/FormularioMeega";
 import FormularioEstimulo from "./components/FomularioEstimulo";
 import Gracias from "./components/Gracias";
@@ -7,20 +7,38 @@ export default function App() {
   const location = useLocation();
   const esPaginaGracias = location.pathname === "/gracias";
 
+  const cls = (isActive) => `nav-link ${isActive ? "active" : ""}`;
+
   return (
     <div className="container py-5">
-      {/* Solo mostrar el nav si NO es la página de gracias */}
       {!esPaginaGracias && (
         <nav className="mb-4">
           <ul className="nav nav-pills justify-content-center gap-3">
             <li className="nav-item">
-              <Link to="/estimulo-pre" className="nav-link">1. Estimulación Pre</Link>
+              <a
+                href="https://hvr22.github.io/STEM_Play/"
+                className="nav-link fw-semibold"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Abrir juego (se abre en una nueva pestaña)"
+              >
+                🎮 Jugar STEM_Play
+              </a>
             </li>
             <li className="nav-item">
-              <Link to="/estimulo-post" className="nav-link">2. Estimulación Post</Link>
+              <NavLink to="/estimulo-pre" className={({ isActive }) => cls(isActive)}>
+                1. Estimulación Pre
+              </NavLink>
             </li>
             <li className="nav-item">
-              <Link to="/meega" className="nav-link">3. Experiencia de usuario y usabilidad Post</Link>
+              <NavLink to="/estimulo-post" className={({ isActive }) => cls(isActive)}>
+                2. Estimulación Post
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink to="/meega" className={({ isActive }) => cls(isActive)}>
+                3. Experiencia de usuario y usabilidad Post
+              </NavLink>
             </li>
           </ul>
         </nav>
